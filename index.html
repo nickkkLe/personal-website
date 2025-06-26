@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nicholas le | developer</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><rect x='10' y='10' width='80' height='80' fill='none' stroke='%2300f260' stroke-width='2'/><text x='50' y='65' font-family='monospace' font-size='36' fill='%2300f260' text-anchor='middle' font-weight='900'>nl</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#hero-1">
+                    <span class="terminal-user">nicholas</span><span class="terminal-at">@</span><span class="terminal-host">dev</span><span class="terminal-colon">:</span><span class="terminal-path">~</span><span class="terminal-prompt">$</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#hero-1" class="nav-link">home</a></li>
+                <li><a href="#hero-2" class="nav-link">about</a></li>
+                <li><a href="#projects" class="nav-link">projects</a></li>
+                <li><a href="#skills" class="nav-link">skills</a></li>
+                <li><a href="#contact" class="nav-link">contact</a></li>
+                <li><a href="Nicholas_Le_Resume.pdf" class="nav-link" target="_blank" rel="noopener noreferrer" download="Nicholas Le Resume.pdf">resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Page 1: Name -->
+    <section id="hero-1" class="hero-page">
+        <div class="hero-content">
+            <h1 class="hero-title" id="hero-title"></h1>
+        </div>
+        <div class="scroll-indicator">
+            <p>scroll down</p>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <!-- Hero Page 2: Role -->
+    <section id="hero-2" class="hero-page">
+        <div class="hero-content">
+            <h1 class="hero-title hero-role">full stack developer</h1>
+            <p class="hero-subtitle">i build things for the web</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-secondary">projects</a>
+                <a href="#contact" class="btn btn-secondary">contact</a>
+                <a href="Nicholas_Le_Resume.pdf" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" download="Nicholas Le Resume.pdf">preview resume</a>
+            </div>
+            <div class="about-card">
+                <img src="profile.png" alt="profile photo" class="about-photo" />
+                <div class="about-text">
+                    <p>
+                        i'm a computer engineering student at ucsd (3.8 gpa) passionate about full-stack development, mobile apps, and game development. 
+                        when i'm not coding, you'll find me working on robosub projects or mentoring fellow developers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3>ucsd robosub team website</h3>
+                            <p>full-stack platform for UCSD RoboSub with dynamic content management, user authentication, and role-based access control. designed high-fidelity figma prototypes and implemented pixel-perfect react components.</p>
+                            <div class="project-tech">
+                                <span>react</span>
+                                <span>javascript</span>
+                                <span>mongodb</span>
+                                <span>express.js</span>
+                                <span>figma</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3>date tracker ios app</h3>
+                            <p>offline-capable ios app with real-time conflict resolution using firestore. features custom swiftui calendar components, lock-screen widgets, and one-tap pairing via firebase auth.</p>
+                            <div class="project-tech">
+                                <span>swift</span>
+                                <span>swiftui</span>
+                                <span>firebase</span>
+                                <span>firestore</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3>hookpoint collaboration game</h3>
+                            <p>unity video game with dynamic hooking mechanics using c# coroutines and physics joints. optimized navmesh generation and custom a* heuristics for improved ai pathfinding efficiency.</p>
+                            <div class="project-tech">
+                                <span>unity</span>
+                                <span>c#</span>
+                                <span>git</span>
+                                <span>game development</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image">
+                            <i class="fas fa-golf-ball"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3>golf academy performance tracker</h3>
+                            <p>ios app for goose creek golf academy that authenticates users via firebase auth and displays interactive charts to track swing performance trends and reduce manual data lookup.</p>
+                            <div class="project-tech">
+                                <span>swiftui</span>
+                                <span>firebase auth</span>
+                                <span>firestore</span>
+                                <span>ios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title">skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <i class="fab fa-java"></i>
+                        <h3>java</h3>
+                        <p>oop, data structures, algorithms</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-code"></i>
+                        <h3>c</h3>
+                        <p>systems programming, memory management</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-js"></i>
+                        <h3>javascript</h3>
+                        <p>es6+, react, node.js, express.js</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-swift"></i>
+                        <h3>swift</h3>
+                        <p>swiftui, ios development, firebase</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-html5"></i>
+                        <h3>web development</h3>
+                        <p>html5, css3, responsive design</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-react"></i>
+                        <h3>frontend frameworks</h3>
+                        <p>react, component architecture</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-database"></i>
+                        <h3>databases</h3>
+                        <p>mongodb, firestore, data modeling</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-fire"></i>
+                        <h3>firebase</h3>
+                        <p>auth, firestore, cloud functions</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-unity"></i>
+                        <h3>game development</h3>
+                        <p>unity, c#, physics, ai pathfinding</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-git-alt"></i>
+                        <h3>version control</h3>
+                        <p>git, github, collaborative workflows</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-tools"></i>
+                        <h3>development tools</h3>
+                        <p>figma, ci/cd, github actions</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>mobile development</h3>
+                        <p>ios, swiftui, app store deployment</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">contact</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <a href="mailto:nicholas73.le@gmail.com" class="contact-block-link">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h4>personal email</h4>
+                                    <p>nicholas73.le@gmail.com</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="mailto:nkl001@ucsd.edu" class="contact-block-link">
+                            <div class="contact-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <div>
+                                    <h4>school email</h4>
+                                    <p>nkl001@ucsd.edu</p>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/nicholas-le-0b7704285/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <form class="contact-form" action="https://formspree.io/f/meoklbwn" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">send</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2025 nicholas le. all rights reserved.</p>
+            </div>
+        </footer>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
