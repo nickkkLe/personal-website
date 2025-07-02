@@ -1,0 +1,54 @@
+[build]
+  # Since this is a static site, no build command needed
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "*.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+    Content-Disposition = "inline"
+
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Redirect all traffic to HTTPS
+[[redirects]]
+  from = "http://nicholasle.dev/*"
+  to = "https://nicholasle.dev/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.nicholasle.dev/*"
+  to = "https://nicholasle.dev/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.nicholasle.dev/*"
+  to = "https://nicholasle.dev/:splat"
+  status = 301
+  force = true 
