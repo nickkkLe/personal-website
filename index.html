@@ -22,6 +22,7 @@
             <ul class="nav-menu">
                 <li><a href="#hero-1" class="nav-link">home</a></li>
                 <li><a href="#hero-2" class="nav-link">about</a></li>
+                <li><a href="#experience" class="nav-link">experience</a></li>
                 <li><a href="#projects" class="nav-link">projects</a></li>
                 <li><a href="#skills" class="nav-link">skills</a></li>
                 <li><a href="#contact" class="nav-link">contact</a></li>
@@ -70,6 +71,54 @@
 
     <!-- Main Content -->
     <main id="main-content">
+        <!-- Experience Section -->
+        <section id="experience" class="experience">
+            <div class="container">
+                <h2 class="section-title">experience</h2>
+                <div class="experience-grid">
+                    <div class="experience-card">
+                        <div class="experience-image">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="experience-content">
+                            <h3>full stack developer</h3>
+                            <p class="experience-company">health1st.ai</p>
+                            <p class="experience-duration">january 2025 - present</p>
+                            <p class="experience-description">
+                                <span class="description-short">architected a distributed, microservices-based platform for healthcare organizations with role-aware multi-tenant isolation, ensuring secure data partitioning across providers, patients, and administrators.</span>
+                                <span class="description-full" style="display: none;">
+                                    architected a distributed, microservices-based platform for healthcare organizations with role-aware multi-tenant isolation, ensuring secure data partitioning across providers, patients, and administrators.<br><br>
+                                    
+                                    implemented real-time multimodal AI workflows (voice + text) by streaming audio via WebSockets to a low-latency Whisper STT pipeline, enabling live transcription, conversational command execution, and contextual agent responses.<br><br>
+                                    
+                                    integrated Model Context Protocol (MCP) to orchestrate appointment scheduling, eligibility checks, and record lookups through declarative tool interfaces—abstracting complex healthcare workflows into reusable AI-driven operations.<br><br>
+                                    
+                                    designed a scalable event-driven backend using FastAPI, PostgreSQL, and Redis, supporting high-concurrency scheduling and real-time state synchronization with sub-second updates.<br><br>
+                                    
+                                    developed a customizable analytics dashboard with drag-and-drop layouts, dynamic data visualization, and secure audit logging for healthcare compliance (HIPAA-style governance).<br><br>
+                                    
+                                    containerized and deployed services via Docker Compose and TurboRepo, leveraging CI/CD pipelines for reproducible builds, parallelized test execution, and streamlined developer onboarding.
+                                </span>
+                            </p>
+                            <button class="read-more-btn" onclick="toggleDescription(this)">read more</button>
+                            <div class="experience-tech">
+                                <span>next.js</span>
+                                <span>fastapi</span>
+                                <span>postgresql</span>
+                                <span>mcp</span>
+                                <span>docker</span>
+                                <span>redis</span>
+                                <span>websockets</span>
+                                <span>whisper</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
         <!-- Projects Section -->
         <section id="projects" class="projects">
             <div class="container">
@@ -94,7 +143,7 @@
 
                     <div class="project-card">
                         <div class="project-image">
-                            <i class="fab fa-apple"></i>
+                            <i class="fas fa-mobile-alt"></i>
                         </div>
                         <div class="project-content">
                             <h3>date tracker ios app</h3>
@@ -110,7 +159,7 @@
 
                     <div class="project-card">
                         <div class="project-image">
-                            <i class="fas fa-gamepad"></i>
+                            <i class="fas fa-anchor"></i>
                         </div>
                         <div class="project-content">
                             <h3>hookpoint collaboration game</h3>
@@ -126,7 +175,7 @@
 
                     <div class="project-card">
                         <div class="project-image">
-                            <i class="fas fa-golf-ball"></i>
+                            <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="project-content">
                             <h3>golf academy performance tracker</h3>
@@ -154,11 +203,6 @@
                         <p>oop, data structures, algorithms</p>
                     </div>
                     <div class="skill-card">
-                        <i class="fas fa-code"></i>
-                        <h3>c</h3>
-                        <p>systems programming, memory management</p>
-                    </div>
-                    <div class="skill-card">
                         <i class="fab fa-js"></i>
                         <h3>javascript</h3>
                         <p>es6+, react, node.js, express.js</p>
@@ -167,11 +211,6 @@
                         <i class="fab fa-swift"></i>
                         <h3>swift</h3>
                         <p>swiftui, ios development, firebase</p>
-                    </div>
-                    <div class="skill-card">
-                        <i class="fab fa-html5"></i>
-                        <h3>web development</h3>
-                        <p>html5, css3, responsive design</p>
                     </div>
                     <div class="skill-card">
                         <i class="fab fa-react"></i>
@@ -184,30 +223,31 @@
                         <p>mongodb, firestore, data modeling</p>
                     </div>
                     <div class="skill-card">
-                        <i class="fas fa-fire"></i>
-                        <h3>firebase</h3>
-                        <p>auth, firestore, cloud functions</p>
-                    </div>
-                    <div class="skill-card">
-                        <i class="fab fa-unity"></i>
-                        <h3>game development</h3>
-                        <p>unity, c#, physics, ai pathfinding</p>
-                    </div>
-                    <div class="skill-card">
                         <i class="fab fa-git-alt"></i>
                         <h3>version control</h3>
                         <p>git, github, collaborative workflows</p>
                     </div>
                     <div class="skill-card">
-                        <i class="fas fa-tools"></i>
-                        <h3>development tools</h3>
-                        <p>figma, ci/cd, github actions</p>
+                        <i class="fab fa-python"></i>
+                        <h3>python & fastapi</h3>
+                        <p>fastapi, microservices, api development</p>
                     </div>
                     <div class="skill-card">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h3>mobile development</h3>
-                        <p>ios, swiftui, app store deployment</p>
+                        <i class="fas fa-database"></i>
+                        <h3>postgresql & redis</h3>
+                        <p>relational databases, caching, data modeling</p>
                     </div>
+                    <div class="skill-card">
+                        <i class="fas fa-robot"></i>
+                        <h3>ai & ml</h3>
+                        <p>whisper stt, mcp, multimodal workflows</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-network-wired"></i>
+                        <h3>websockets & real-time</h3>
+                        <p>real-time communication, live streaming</p>
+                    </div>
+
                 </div>
             </div>
         </section>

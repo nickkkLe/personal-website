@@ -1,3 +1,31 @@
+// Scroll to top on page load
+window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+});
+
+// Toggle experience description
+function toggleDescription(button) {
+    const card = button.closest('.experience-card');
+    const shortDesc = card.querySelector('.description-short');
+    const fullDesc = card.querySelector('.description-full');
+    
+    if (fullDesc.style.display === 'none') {
+        shortDesc.style.display = 'none';
+        fullDesc.style.display = 'block';
+        button.textContent = 'read less';
+    } else {
+        shortDesc.style.display = 'block';
+        fullDesc.style.display = 'none';
+        button.textContent = 'read more';
+        // Scroll back to top of the experience card when collapsing
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Additional scroll up to give more space
+        setTimeout(() => {
+            window.scrollBy({ top: -100, behavior: 'smooth' });
+        }, 300);
+    }
+}
+
 // Mobile Navigation Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
