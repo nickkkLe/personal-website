@@ -1,3 +1,35 @@
+// Scroll to top on page load
+window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+});
+
+// Toggle experience description
+function toggleDescription(button) {
+    const card = button.closest('.experience-card');
+    const shortDesc = card.querySelector('.description-short');
+    const fullDesc = card.querySelector('.description-full');
+    const experienceSection = document.getElementById('experience');
+    
+    if (fullDesc.style.display === 'none') {
+        shortDesc.style.display = 'none';
+        fullDesc.style.display = 'block';
+        button.textContent = 'read less';
+    } else {
+        shortDesc.style.display = 'block';
+        fullDesc.style.display = 'none';
+        button.textContent = 'read more';
+        // Calculate the target scroll position to show the experience section with extra space
+        const experienceSectionTop = experienceSection.offsetTop;
+        const targetScrollPosition = experienceSectionTop - 150;
+        
+        // Single smooth scroll to the target position
+        window.scrollTo({
+            top: targetScrollPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
 // Mobile Navigation Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');

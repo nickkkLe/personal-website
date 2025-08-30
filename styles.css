@@ -448,6 +448,116 @@ section {
     border: 1px solid rgba(0, 242, 96, 0.2);
 }
 
+/* Experience Section */
+.experience {
+    background: transparent;
+    backdrop-filter: none;
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.experience-card {
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.experience-card:hover {
+    transform: scale(1.03);
+    border-color: rgba(0, 242, 96, 0.3);
+}
+
+.experience-image {
+    height: 200px;
+    background: #111111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #00f260;
+}
+
+.experience-content {
+    padding: 1.5rem;
+}
+
+.experience-content h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 0.5rem;
+}
+
+.experience-company {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #00f260;
+    margin-bottom: 0.25rem;
+}
+
+.experience-duration {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.experience-content p:not(.experience-company):not(.experience-duration) {
+    color: #b0b0b0;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.experience-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.experience-tech span {
+    background: rgba(0, 242, 96, 0.1);
+    color: #00f260;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 242, 96, 0.2);
+}
+
+.read-more-btn {
+    background: transparent;
+    border: 1px solid #00f260;
+    color: #00f260;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.read-more-btn:hover {
+    background: rgba(0, 242, 96, 0.1);
+    transform: translateY(-1px);
+}
+
+.read-more-btn:active {
+    transform: translateY(0);
+}
+
+.description-full {
+    line-height: 1.6;
+}
+
 /* Skills Section */
 .skills {
     background: transparent;
@@ -681,6 +791,10 @@ section {
     }
 
     .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .experience-grid {
         grid-template-columns: 1fr;
     }
 
