@@ -86,31 +86,40 @@
                             <p class="experience-company">health1st.ai</p>
                             <p class="experience-duration">june 2025 - present</p>
                             <p class="experience-description">
-                                <span class="description-short">architected a distributed, microservices-based platform for healthcare organizations with role-aware multi-tenant isolation, ensuring secure data partitioning across providers, patients, and administrators.</span>
+                                <span class="description-short">built enterprise-grade FastAPI service for healthcare data interoperability supporting HL7 v2.1-2.7, FHIR R3-R5, CCDA R1-R2, and X12 5010 standards with sub-100ms transformation performance.</span>
                                 <span class="description-full" style="display: none;">
-                                    architected a distributed, microservices-based platform for healthcare organizations with role-aware multi-tenant isolation, ensuring secure data partitioning across providers, patients, and administrators.<br><br>
+                                    built enterprise-grade FastAPI service for healthcare data interoperability supporting HL7 v2.1-2.7, FHIR R3-R5, CCDA R1-R2, and X12 5010 standards with sub-100ms transformation performance.<br><br>
                                     
-                                    implemented real-time multimodal AI workflows (voice + text) by streaming audio via WebSockets to a low-latency Whisper STT pipeline, enabling live transcription, conversational command execution, and contextual agent responses.<br><br>
+                                    implemented universal validation engine with version-specific rules for 4 major healthcare standards (100+ HL7 message types, 50+ FHIR resources, 20+ CCDA documents) and designed high-performance transformation engine with Redis caching and async processing.<br><br>
                                     
-                                    integrated Model Context Protocol (MCP) to orchestrate appointment scheduling, eligibility checks, and record lookups through declarative tool interfaces—abstracting complex healthcare workflows into reusable AI-driven operations.<br><br>
+                                    integrated LangChain with OpenAI/Anthropic LLMs for intelligent field mapping suggestions and implemented vector similarity search using Pinecone for healthcare mapping recommendations with AI validation system for mapping template quality assurance.<br><br>
                                     
-                                    designed a scalable event-driven backend using FastAPI, PostgreSQL, and Redis, supporting high-concurrency scheduling and real-time state synchronization with sub-second updates.<br><br>
+                                    architected distributed microservices platform with role-aware multi-tenant isolation, OWASP-compliant security middleware (JWT authentication, API key management), and rate limiting system with Redis-backed storage.<br><br>
                                     
-                                    developed a customizable analytics dashboard with drag-and-drop layouts, dynamic data visualization, and secure audit logging for healthcare compliance (HIPAA-style governance).<br><br>
+                                    built comprehensive health monitoring with database/Redis latency tracking, connection pooling metrics, and readiness/liveness probes with Docker containerized microservice using PostgreSQL 15+ async SQLAlchemy and Redis 7+ caching.<br><br>
                                     
-                                    containerized and deployed services via Docker Compose and TurboRepo, leveraging CI/CD pipelines for reproducible builds, parallelized test execution, and streamlined developer onboarding.
+                                    implemented CI/CD pipeline with Google Cloud Build including code quality checks, security scanning, test coverage (70%+), and automated Cloud Run deployment with comprehensive observability using Prometheus metrics and OpenTelemetry tracing.<br><br>
+                                    
+                                    developed advanced drag-and-drop functionality using @dnd-kit for customizable dashboard layouts and multi-modal AI chat interface with voice recognition, WebSocket integration, and hybrid API communication for real-time healthcare assistant interactions.<br><br>
+                                    
+                                    architected responsive healthcare management system supporting multiple dashboard types (Administrative, PMS, Interoperability, RCM) with wizard-based configuration system for healthcare channel setup and real-time speech-to-text functionality.
                                 </span>
                             </p>
                             <button class="read-more-btn" onclick="toggleDescription(this)">read more</button>
                             <div class="experience-tech">
-                                <span>next.js</span>
                                 <span>fastapi</span>
                                 <span>postgresql</span>
-                                <span>mcp</span>
-                                <span>docker</span>
                                 <span>redis</span>
+                                <span>hl7/fhir</span>
+                                <span>langchain</span>
+                                <span>openai/anthropic</span>
+                                <span>docker</span>
                                 <span>websockets</span>
-                                <span>whisper</span>
+                                <span>pinecone</span>
+                                <span>prometheus</span>
+                                <span>google cloud</span>
+                                <span>dnd-kit</span>
+                                <span>owasp security</span>
                             </div>
                         </div>
                     </div>
