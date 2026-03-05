@@ -139,12 +139,44 @@
                 <div class="experience-grid">
                     <div class="experience-card">
                         <div class="experience-image">
-                            <i class="fas fa-brain"></i>
+                            <!-- kyte logo -->
+                            <img src="kyte.png" alt="Kyte logo" class="experience-logo" />
+                        </div>
+                        <div class="experience-content">
+                            <h3>co-founder</h3>
+                            <p class="experience-company">kyte</p>
+                            <p class="experience-duration">january 2025 - may 2025</p>
+                            <p class="experience-description">
+                                <span class="description-short">Co‑Founder & CEO of Kyte, building and scaling a college delivery marketplace used by tens of thousands.</span>
+                                <span class="description-full" style="display: none;">
+                                    directed business strategy, go-to-market execution, and brand positioning overseeing operations, logistics, and marketing campaigns reaching 40,000+ UCSD students.<br><br>
+                                    architected a high-throughput, multi-sided delivery marketplace handling 40,000 students and 3,000+ weekly orders, leading product vision for customer, runner, and admin clients.<br><br>
+                                    engineered a highly concurrent backend with Next.js 16, TypeScript, PostgreSQL (Neon), and Redis/BullMQ; designed a fault-tolerant transactional engine with strict payment idempotency and webhook-driven state reconciliation.<br><br>
+                                    developed real-time state management and live dispatch routing for meetpoint-based fulfillment, utilizing schema-driven API contracts to meet a sub‑40‑minute SLA and led all continuous deployment and architectural decisions.
+                                </span>
+                            </p>
+                            <button class="read-more-btn" onclick="toggleDescription(this)">read more</button>
+                            <div class="experience-tech">
+                                <span>next.js</span>
+                                <span>typescript</span>
+                                <span>postgresql</span>
+                                <span>redis</span>
+                                <span>bullmq</span>
+                                <span>api design</span>
+                                <span>ci/cd</span>
+                            </div>
+                    </div>
+                    </div>
+
+                    <div class="experience-card">
+                        <div class="experience-image">
+                            <!-- health1st logo; place the image file as health1st.png in the project root -->
+                            <img src="health1st.png" alt="Health1st logo" class="experience-logo" />
                         </div>
                         <div class="experience-content">
                             <h3>software intern</h3>
                             <p class="experience-company">health1st.ai</p>
-                            <p class="experience-duration">june 2025 - present</p>
+                            <p class="experience-duration">june 2025 - december 2025</p>
                             <p class="experience-description">
                                 <span class="description-short">built enterprise-grade FastAPI service for healthcare data interoperability supporting HL7 v2.1-2.7, FHIR R3-R5, CCDA R1-R2, and X12 5010 standards with sub-100ms transformation performance.</span>
                                 <span class="description-full" style="display: none;">

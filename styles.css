@@ -486,6 +486,11 @@ section {
     color: #00f260;
 }
 
+.experience-logo {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
 .experience-content {
     padding: 1.5rem;
 }
