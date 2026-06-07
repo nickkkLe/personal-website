@@ -331,10 +331,26 @@ section {
 .section-title {
     font-size: 2.5rem;
     font-weight: 800;
-    text-align: center;
     margin-bottom: 3rem;
     color: #e0e0e0;
-    text-shadow: 0 0 8px rgba(0, 242, 96, 0.3);
+    text-shadow: 0 0 12px rgba(0, 242, 96, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+}
+
+.section-title::before,
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0, 242, 96, 0.5));
+    max-width: 200px;
+}
+
+.section-title::after {
+    background: linear-gradient(to left, transparent, rgba(0, 242, 96, 0.5));
 }
 
 /* About Section */
@@ -381,135 +397,417 @@ section {
     line-height: 1.7;
 }
 
-/* Projects Section */
-.projects {
+/* ============================================
+   PCB TIMELINE — Experience
+   ============================================ */
+
+.experience {
     background: transparent;
+    backdrop-filter: none;
+    position: relative;
+    padding-top: 60px;
+    padding-bottom: 40px;
 }
 
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
+/* PCB substrate dot grid */
+.experience::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,242,96,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
 }
 
-.project-card {
-    background: #1a1a1a;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: border-color 0.3s ease, transform 0.3s ease;
+.experience .container {
+    position: relative;
+    z-index: 1;
 }
 
-.project-card:hover {
-    transform: scale(1.03);
-    border-color: rgba(0, 242, 96, 0.3);
+.experience .section-title {
+    margin-bottom: 1.5rem;
 }
 
-.project-image {
-    height: 200px;
-    background: #111111;
+.pcb-timeline {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    padding-left: 72px;
+}
+
+/* Vertical trace */
+.pcb-timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 18px;
+    bottom: 50px;
+    width: 2px;
+    background: linear-gradient(180deg,
+        #00f260 0%,
+        rgba(0, 242, 96, 0.7) 60%,
+        rgba(0, 242, 96, 0.15) 100%
+    );
+    box-shadow: 0 0 6px rgba(0, 242, 96, 0.4);
+}
+
+/* Animated signal traveling down the trace */
+.pcb-timeline::after {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: -100px;
+    width: 6px;
+    height: 100px;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(0, 242, 96, 0.0) 10%,
+        rgba(0, 242, 96, 0.9) 40%,
+        rgba(138, 255, 200, 1) 50%,
+        rgba(0, 242, 96, 0.9) 60%,
+        rgba(0, 242, 96, 0.0) 90%,
+        transparent 100%
+    );
+    filter: blur(3px);
+    z-index: 5;
+    pointer-events: none;
+    animation: trace-signal 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes trace-signal {
+    0%   { top: -100px; opacity: 0; }
+    6%   { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+.pcb-entry {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2.25rem;
+}
+
+.pcb-entry-side {
+    position: absolute;
+    left: -72px;
+    top: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: #00f260;
+    width: 72px;
 }
 
-.project-content {
-    padding: 1.5rem;
+.pcb-via {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #00f260;
+    border-radius: 50%;
+    background: #040d06;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    margin-left: 8px;
+    box-shadow:
+        0 0 0 5px rgba(0, 242, 96, 0.12),
+        0 0 0 9px rgba(0, 242, 96, 0.05),
+        0 0 18px rgba(0, 242, 96, 0.7);
+    animation: via-pulse 2.5s ease-in-out infinite;
 }
 
-.project-content h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #e0e0e0;
+@keyframes via-pulse {
+    0%, 100% {
+        box-shadow:
+            0 0 0 5px rgba(0, 242, 96, 0.12),
+            0 0 0 9px rgba(0, 242, 96, 0.05),
+            0 0 14px rgba(0, 242, 96, 0.5);
+    }
+    50% {
+        box-shadow:
+            0 0 0 5px rgba(0, 242, 96, 0.22),
+            0 0 0 11px rgba(0, 242, 96, 0.08),
+            0 0 28px rgba(0, 242, 96, 0.9);
+    }
+}
+
+.pcb-via::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: #00f260;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 242, 96, 1), 0 0 16px rgba(0, 242, 96, 0.5);
+}
+
+.pcb-h-trace {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, #00f260, rgba(0,242,96,0.3));
+    box-shadow: 0 0 4px rgba(0, 242, 96, 0.4);
+}
+
+/* PCB Card */
+.pcb-card {
+    flex: 1;
+    background: rgba(4, 10, 6, 0.92);
+    border: 1px solid rgba(0, 242, 96, 0.15);
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Top-left corner bracket */
+.pcb-card::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 30px;
+    height: 30px;
+    border-top: 2.5px solid #00f260;
+    border-left: 2.5px solid #00f260;
+    pointer-events: none;
+    filter: drop-shadow(0 0 4px rgba(0, 242, 96, 0.8));
+}
+
+/* Bottom-right corner bracket */
+.pcb-card::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 30px;
+    height: 30px;
+    border-bottom: 2.5px solid #00f260;
+    border-right: 2.5px solid #00f260;
+    pointer-events: none;
+    filter: drop-shadow(0 0 4px rgba(0, 242, 96, 0.8));
+}
+
+.pcb-entry:hover .pcb-card {
+    border-color: rgba(0, 242, 96, 0.3);
+    box-shadow: 0 4px 40px rgba(0, 242, 96, 0.05);
+}
+
+/* Component reference designator */
+.pcb-ref {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 0.65rem;
+    color: rgba(0, 242, 96, 0.55);
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    user-select: none;
+    text-shadow: 0 0 8px rgba(0, 242, 96, 0.5);
+}
+
+.experience-logos {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 1rem;
+    padding: 0.6rem 0.75rem;
+    background: rgba(0, 242, 96, 0.03);
+    border: 1px solid rgba(0, 242, 96, 0.1);
+    display: inline-flex;
 }
 
-.project-content p {
-    color: #b0b0b0;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
+.experience-logos-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
-.project-tech {
+.exp-logo-sm {
+    height: 42px;
+    width: auto;
+    max-width: 120px;
+    object-fit: contain;
+    opacity: 0.92;
+    transition: opacity 0.2s ease, filter 0.2s ease;
+    filter: brightness(1.1);
+}
+
+.exp-logo-sm:hover {
+    opacity: 1;
+    filter: brightness(1.3);
+}
+
+.exp-logo-lg {
+    height: 58px;
+    max-width: 160px;
+}
+
+.chip-3d-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+    border: 1px solid rgba(0, 242, 96, 0.18);
+    background: rgba(0, 0, 0, 0.55);
+    box-shadow: 0 0 40px rgba(0, 242, 96, 0.06), inset 0 0 60px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+#chip-3d-canvas {
+    width: 100%;
+    height: 420px;
+    display: block;
+    cursor: crosshair;
+}
+
+.chip-hover-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.62rem;
+    color: rgba(0, 242, 96, 0.28);
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 0.14em;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    white-space: nowrap;
+}
+
+.chip-hover-hint.hidden {
+    opacity: 0;
+}
+
+.chip-3d-label {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 0.6rem;
+    color: rgba(0, 242, 96, 0.45);
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 0.08em;
+    pointer-events: none;
+}
+
+/* Category selector */
+.chip-categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1rem;
+}
+
+.chip-cat-btn {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: lowercase;
+    color: rgba(0, 242, 96, 0.55);
+    background: transparent;
+    border: 1px solid rgba(0, 242, 96, 0.22);
+    padding: 0.3rem 0.9rem;
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    position: relative;
+}
+
+.chip-cat-btn:hover {
+    color: #00f260;
+    border-color: rgba(0, 242, 96, 0.55);
+    background: rgba(0, 242, 96, 0.04);
+    box-shadow: 0 0 10px rgba(0, 242, 96, 0.12);
+}
+
+.chip-cat-btn.active {
+    color: #00f260;
+    border-color: #00f260;
+    background: rgba(0, 242, 96, 0.07);
+    box-shadow: 0 0 18px rgba(0, 242, 96, 0.22), inset 0 0 8px rgba(0, 242, 96, 0.04);
+}
+
+/* Skill readout panel */
+.chip-skill-panel {
+    border: 1px solid rgba(0, 242, 96, 0.18);
+    background: rgba(0, 0, 0, 0.45);
+    padding: 1rem 1.5rem 1.25rem;
+    min-height: 80px;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
+}
+
+.chip-skill-ref {
+    font-size: 0.62rem;
+    color: rgba(0, 242, 96, 0.45);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+}
+
+.chip-skill-items {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
-.project-tech span {
-    background: rgba(0, 242, 96, 0.1);
+.chip-skill-items span {
+    font-size: 0.75rem;
     color: #00f260;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
+    border: 1px solid rgba(0, 242, 96, 0.35);
+    padding: 0.28rem 0.7rem;
+    background: rgba(0, 242, 96, 0.05);
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.chip-skill-items span.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pcb-card h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #e8e8e8;
+    margin-bottom: 0.35rem;
+}
+
+.experience-company {
+    font-size: 0.9rem;
     font-weight: 500;
-    border: 1px solid rgba(0, 242, 96, 0.2);
-}
-
-/* Experience Section */
-.experience {
-    background: transparent;
-    backdrop-filter: none;
-}
-
-.experience-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.experience-card {
-    background: #1a1a1a !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    transition: border-color 0.3s ease, transform 0.3s ease !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-}
-
-.experience-card:hover {
-    transform: scale(1.03);
-    border-color: rgba(0, 242, 96, 0.3);
-}
-
-.experience-image {
-    height: 200px;
-    background: #111111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
     color: #00f260;
+    margin-bottom: 0.2rem;
 }
 
-.experience-logo {
-    max-height: 60%;
-    max-width: 60%;
-    object-fit: contain;
+.experience-duration {
+    font-size: 0.75rem;
+    color: rgba(0, 242, 96, 0.4);
+    margin-bottom: 0.85rem;
+    letter-spacing: 0.04em;
 }
 
-.experience-image-dual {
-    gap: 1rem;
-    padding: 1rem;
+.experience-description {
+    color: #7a7a7a;
+    line-height: 1.7;
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
 }
 
-.experience-logo-link {
+.experience-tech {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    width: 100%;
-    height: 100%;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
 }
 
-.experience-logo-small {
-    max-height: 80px;
-    max-width: 45%;
-    object-fit: contain;
+.experience-tech span {
+    background: rgba(0, 242, 96, 0.05);
+    color: rgba(0, 242, 96, 0.6);
+    padding: 2px 9px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(0, 242, 96, 0.15);
+    letter-spacing: 0.03em;
 }
 
 .company-link {
@@ -529,70 +827,25 @@ section {
     opacity: 0.75;
 }
 
-.experience-content {
-    padding: 1.5rem;
-}
-
-.experience-content h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #e0e0e0;
-    margin-bottom: 0.5rem;
-}
-
-.experience-company {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #00f260;
-    margin-bottom: 0.25rem;
-}
-
-.experience-duration {
-    font-size: 0.9rem;
-    color: #888;
-    margin-bottom: 1rem;
-    font-style: italic;
-}
-
-.experience-content p:not(.experience-company):not(.experience-duration) {
-    color: #b0b0b0;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-
-.experience-tech {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.experience-tech span {
-    background: rgba(0, 242, 96, 0.1);
-    color: #00f260;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border: 1px solid rgba(0, 242, 96, 0.2);
-}
-
 .read-more-btn {
     background: transparent !important;
-    border: 1px solid #00f260 !important;
-    color: #00f260 !important;
-    padding: 8px 16px !important;
-    border-radius: 4px !important;
+    border: 1px solid rgba(0, 242, 96, 0.4) !important;
+    color: rgba(0, 242, 96, 0.7) !important;
+    padding: 5px 12px !important;
+    border-radius: 0 !important;
     font-family: 'Roboto Mono', monospace !important;
-    font-size: 0.9rem !important;
+    font-size: 0.75rem !important;
     cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    margin-bottom: 1rem !important;
+    transition: all 0.2s ease !important;
+    margin-bottom: 0.85rem !important;
     display: inline-block !important;
+    letter-spacing: 0.05em !important;
 }
 
 .read-more-btn:hover {
-    background: rgba(0, 242, 96, 0.1);
-    transform: translateY(-1px);
+    background: rgba(0, 242, 96, 0.08) !important;
+    border-color: rgba(0, 242, 96, 0.7) !important;
+    color: #00f260 !important;
 }
 
 .read-more-btn:active {
@@ -600,51 +853,383 @@ section {
 }
 
 .description-full {
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-/* Skills Section */
+/* ============================================
+   PCB COMPONENT OUTLINE — Projects
+   ============================================ */
+
+.projects {
+    background: transparent;
+    position: relative;
+}
+
+/* PCB substrate dot grid */
+.projects::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,242,96,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.projects .container {
+    position: relative;
+    z-index: 1;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem;
+}
+
+.project-card {
+    position: relative;
+    background: rgba(4, 10, 6, 0.92);
+    border: 1px solid rgba(0, 242, 96, 0.12);
+    padding: 1.75rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top-right corner bracket */
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 30px;
+    height: 30px;
+    border-top: 2.5px solid #00f260;
+    border-right: 2.5px solid #00f260;
+    pointer-events: none;
+    filter: drop-shadow(0 0 4px rgba(0, 242, 96, 0.8));
+}
+
+/* Bottom-left corner bracket */
+.project-card::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: -3px;
+    width: 30px;
+    height: 30px;
+    border-bottom: 2.5px solid #00f260;
+    border-left: 2.5px solid #00f260;
+    pointer-events: none;
+    filter: drop-shadow(0 0 4px rgba(0, 242, 96, 0.8));
+}
+
+.project-card:hover {
+    border-color: rgba(0, 242, 96, 0.28);
+    box-shadow: 0 4px 40px rgba(0, 242, 96, 0.05);
+}
+
+.project-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.project-content h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #e8e8e8;
+    margin-bottom: 0.75rem;
+}
+
+.project-content p {
+    color: #6a6a6a;
+    font-size: 0.87rem;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    flex: 1;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+}
+
+.project-tech span {
+    background: rgba(0, 242, 96, 0.04);
+    color: rgba(0, 242, 96, 0.55);
+    padding: 2px 9px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(0, 242, 96, 0.12);
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+}
+
+.project-card:hover .project-tech span {
+    color: rgba(0, 242, 96, 0.75);
+    border-color: rgba(0, 242, 96, 0.22);
+}
+
+/* ============================================
+   CHIP DIE FLOORPLAN — Skills
+   ============================================ */
+
 .skills {
     background: transparent;
-    backdrop-filter: none;
+    position: relative;
 }
 
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
+/* PCB substrate dot grid */
+.skills::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,242,96,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
 }
 
-.skill-card {
-    background: #1a1a1a;
-    padding: 2rem;
-    border-radius: 8px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: border-color 0.3s ease, transform 0.3s ease;
+.skills .container {
+    position: relative;
+    z-index: 1;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
-.skill-card:hover {
-    transform: scale(1.03);
-    border-color: rgba(0, 242, 96, 0.3);
+.chip-die {
+    max-width: 960px;
+    margin: 0 auto;
+    border: 2px solid rgba(0, 242, 96, 0.7);
+    background: rgba(1, 5, 2, 0.98);
+    position: relative;
+    box-shadow:
+        0 0 0 6px rgba(0, 0, 0, 0.95),
+        0 0 0 7px rgba(0, 242, 96, 0.35),
+        0 0 60px rgba(0, 242, 96, 0.18),
+        0 0 120px rgba(0, 242, 96, 0.08),
+        inset 0 0 80px rgba(0, 0, 0, 0.5);
 }
 
-.skill-card i {
-    font-size: 3rem;
+/* IC pins — right side */
+.chip-die::before {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: 58px;
+    width: 18px;
+    height: 3px;
+    background: rgba(0, 242, 96, 0.7);
+    box-shadow:
+        0 22px 0 rgba(0, 242, 96, 0.7),
+        0 44px 0 rgba(0, 242, 96, 0.7),
+        0 66px 0 rgba(0, 242, 96, 0.7),
+        0 88px 0 rgba(0, 242, 96, 0.7),
+        0 110px 0 rgba(0, 242, 96, 0.7),
+        0 132px 0 rgba(0, 242, 96, 0.7),
+        0 154px 0 rgba(0, 242, 96, 0.7),
+        0 176px 0 rgba(0, 242, 96, 0.7);
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* IC pins — left side */
+.chip-die::after {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 58px;
+    width: 18px;
+    height: 3px;
+    background: rgba(0, 242, 96, 0.7);
+    box-shadow:
+        0 22px 0 rgba(0, 242, 96, 0.7),
+        0 44px 0 rgba(0, 242, 96, 0.7),
+        0 66px 0 rgba(0, 242, 96, 0.7),
+        0 88px 0 rgba(0, 242, 96, 0.7),
+        0 110px 0 rgba(0, 242, 96, 0.7),
+        0 132px 0 rgba(0, 242, 96, 0.7),
+        0 154px 0 rgba(0, 242, 96, 0.7),
+        0 176px 0 rgba(0, 242, 96, 0.7);
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* Square bonding pads at each corner */
+.chip-corner {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    background: #00f260;
+    z-index: 3;
+    box-shadow: 0 0 14px rgba(0, 242, 96, 1), 0 0 6px rgba(0, 242, 96, 1);
+}
+
+.chip-tl { top: -5px; left: -5px; }
+.chip-tr { top: -5px; right: -5px; }
+.chip-bl { bottom: -5px; left: -5px; }
+.chip-br { bottom: -5px; right: -5px; }
+
+/* Header bar — like die label / test pad row */
+.chip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 1.25rem;
+    border-bottom: 1px solid rgba(0, 242, 96, 0.2);
+    background: rgba(0, 242, 96, 0.03);
+}
+
+.chip-id {
+    font-size: 0.72rem;
     color: #00f260;
-    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 242, 96, 0.7);
 }
 
-.skill-card h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #e0e0e0;
-    margin-bottom: 0.5rem;
+.chip-spec {
+    font-size: 0.62rem;
+    color: rgba(0, 242, 96, 0.6);
+    letter-spacing: 0.07em;
 }
 
-.skill-card p {
-    color: #b0b0b0;
-    font-size: 0.9rem;
+/* Die floorplan grid */
+.chip-grid {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1fr;
+    grid-template-rows: auto auto auto;
+}
+
+.chip-block {
+    padding: 1.25rem 1.4rem;
+    border-right: 1px solid rgba(0, 242, 96, 0.18);
+    border-bottom: 1px solid rgba(0, 242, 96, 0.18);
+    position: relative;
+    transition: background 0.25s ease;
+    overflow: hidden;
+}
+
+.chip-block:hover {
+    background: rgba(0, 242, 96, 0.03);
+}
+
+/* Scan line sweep on hover */
+.chip-block::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(180deg, transparent, rgba(0, 242, 96, 0.04), transparent);
+    transition: none;
+    pointer-events: none;
+}
+
+.chip-block:hover::before {
+    animation: block-scan 0.5s ease forwards;
+}
+
+@keyframes block-scan {
+    from { top: -60%; }
+    to   { top: 120%; }
+}
+
+/* Languages core — larger left column feel */
+.chip-block-core {
+    border-right: 1px solid rgba(0, 242, 96, 0.18);
+}
+
+/* Infra/tools bus spans full width (system bus row) */
+.chip-block-bus {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-bottom: none;
+}
+
+/* Last block in each row: no right border */
+.chip-block:nth-child(3),
+.chip-block:nth-child(6) {
+    border-right: none;
+}
+
+.chip-block-label {
+    font-size: 0.6rem;
+    color: rgba(0, 242, 96, 0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    margin-bottom: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-shadow: 0 0 8px rgba(0, 242, 96, 0.4);
+}
+
+.chip-block-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(0, 242, 96, 0.2);
+    box-shadow: 0 0 4px rgba(0, 242, 96, 0.2);
+}
+
+.chip-block-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+}
+
+.chip-block-items span {
+    font-size: 0.83rem;
+    color: #b8b8b8;
+    padding: 0.1rem 0;
+    transition: color 0.2s ease;
+}
+
+.chip-block:hover .chip-block-items span {
+    color: #d0d0d0;
+}
+
+/* Bus row — horizontal tags */
+.chip-block-items-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.chip-block-items-row span {
+    background: rgba(0, 242, 96, 0.05);
+    border: 1px solid rgba(0, 242, 96, 0.12);
+    padding: 3px 10px;
+    font-size: 0.78rem;
+    color: #a0a0a0;
+}
+
+/* Footer — like die markings / lot info */
+.chip-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 1.25rem;
+    border-top: 1px solid rgba(0, 242, 96, 0.15);
+    background: rgba(0, 242, 96, 0.02);
+}
+
+.chip-footer span {
+    font-size: 0.58rem;
+    color: rgba(0, 242, 96, 0.28);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.chip-power {
+    color: rgba(0, 242, 96, 0.4) !important;
 }
 
 /* Contact Section */
@@ -839,12 +1424,32 @@ section {
         grid-template-columns: 1fr;
     }
 
-    .experience-grid {
-        grid-template-columns: 1fr;
+    .pcb-timeline {
+        padding-left: 52px;
     }
 
-    .skills-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    .pcb-timeline::before {
+        left: 12px;
+    }
+
+    .pcb-entry-side {
+        left: -52px;
+        width: 52px;
+        top: 16px;
+    }
+
+    .chip-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .chip-block-core {
+        grid-column: 1 / -1;
+        grid-row: span 1;
+        border-right: none;
+    }
+
+    .chip-spec {
+        display: none;
     }
 
     .contact-content {
@@ -982,4 +1587,411 @@ section {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ── Experience Chip ─────────────────────────────────────────────────── */
+
+/* Side-by-side chip + info layout */
+.exp-layout {
+    display: grid;
+    grid-template-columns: 56% 44%;
+    margin-bottom: 0.75rem;
+    border: 1px solid #1a2e1a;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.exp-chip-side {
+    border-right: 1px solid #1a2e1a;
+}
+
+.exp-chip-wrapper {
+    position: relative;
+    background: #050d05;
+    height: 360px;
+}
+
+#exp-chip-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Info panel — beside the chip, never overlaps */
+.exp-info-side {
+    background: #050d05;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 1.5rem 1.5rem 1.5rem 1.75rem;
+    transition: opacity 0.35s ease;
+    min-height: 360px;
+}
+
+.co-ref {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: #00f26077;
+    text-transform: uppercase;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.co-logos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.co-logos .exp-logo {
+    height: 36px;
+    width: auto;
+    max-width: 110px;
+    object-fit: contain;
+    filter: brightness(0.85);
+}
+
+.co-logos .exp-logo.exp-logo-lg {
+    height: 50px;
+    max-width: 140px;
+}
+
+.co-role {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00f260cc;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+}
+
+.co-company {
+    font-size: 0.82rem;
+    color: #6a9a6a;
+    text-decoration: none;
+    display: block;
+}
+
+a.co-company:hover {
+    color: #00f260;
+}
+
+.co-duration {
+    font-size: 0.72rem;
+    color: #3a5a3a;
+    letter-spacing: 0.05em;
+}
+
+.co-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0.2rem;
+}
+
+.co-highlights span {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border: 1px solid #00f26033;
+    color: #00f260aa;
+    background: #001208;
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+}
+
+.co-short-desc {
+    font-size: 0.82rem;
+    color: #7aaa7a;
+    line-height: 1.65;
+    margin-top: 0.25rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 700px) {
+    .exp-layout {
+        grid-template-columns: 1fr;
+    }
+    .exp-chip-side {
+        border-right: none;
+        border-bottom: 1px solid #1a2e1a;
+    }
+    .exp-chip-wrapper { height: 260px; }
+    .exp-info-side { min-height: unset; padding: 1.25rem; }
+}
+
+.exp-chip-label {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+    font-size: 0.65rem;
+    color: #00f26055;
+    letter-spacing: 0.08em;
+    pointer-events: none;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.chip-hover-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 242, 96, 0.08);
+    border: 1px solid #00f26044;
+    color: #00f26099;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border-radius: 3px;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.chip-hover-hint.hidden {
+    opacity: 0;
+}
+
+/* Experience nav buttons */
+.exp-nav {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0;
+}
+
+.exp-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    background: transparent;
+    border: 1px solid #1a2e1a;
+    color: #7a9a7a;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.72rem;
+    transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    border-radius: 3px;
+}
+
+.exp-nav-btn:hover {
+    border-color: #00f26066;
+    color: #aaccaa;
+}
+
+.exp-nav-btn.active {
+    border-color: #00f260;
+    color: #00f260;
+    box-shadow: 0 0 8px rgba(0, 242, 96, 0.18);
+}
+
+.exp-nav-ref {
+    font-size: 0.6rem;
+    opacity: 0.55;
+    letter-spacing: 0.06em;
+}
+
+.exp-nav-name {
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+/* Full breakdown panel below nav */
+#exp-breakdown {
+    margin-top: 0.75rem;
+    transition: opacity 0.35s ease;
+}
+
+/* Experience panel */
+.exp-panel {
+    position: relative;
+    border: 1px solid #1a2e1a;
+    background: #050d05;
+    padding: 1.5rem;
+    min-height: 160px;
+    transition: opacity 0.15s ease;
+    border-radius: 4px;
+}
+
+.exp-panel::before,
+.exp-panel::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: #00f260;
+    border-style: solid;
+    opacity: 0.4;
+}
+
+.exp-panel::before {
+    top: -1px;
+    left: -1px;
+    border-width: 2px 0 0 2px;
+}
+
+.exp-panel::after {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 2px 2px 0;
+}
+
+.exp-panel-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.exp-logos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.exp-logos .exp-logo {
+    height: 36px;
+    width: auto;
+    max-width: 110px;
+    object-fit: contain;
+    filter: brightness(0.85);
+}
+
+.exp-logos .exp-logo.exp-logo-lg {
+    height: 52px;
+    max-width: 150px;
+}
+
+.exp-panel-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.exp-panel-role {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #00f260;
+    letter-spacing: 0.02em;
+}
+
+.exp-panel-company {
+    font-size: 0.78rem;
+    color: #8aaa8a;
+    text-decoration: none;
+}
+
+a.exp-panel-company:hover {
+    color: #00f260;
+    text-decoration: underline;
+}
+
+.exp-panel-duration {
+    font-size: 0.7rem;
+    color: #4a6a4a;
+    letter-spacing: 0.04em;
+}
+
+.exp-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.exp-highlights span {
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    border: 1px solid #00f26044;
+    color: #00f260cc;
+    background: #001a0a;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+}
+
+.exp-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.exp-bullets li {
+    font-size: 0.82rem;
+    color: #b0c8b0;
+    line-height: 1.6;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.exp-bullets li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: #00f26077;
+    font-size: 0.9rem;
+}
+
+.exp-panel-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.exp-panel-tags span {
+    font-size: 0.65rem;
+    padding: 3px 9px;
+    border: 1px solid #1a3a1a;
+    color: #5a8a5a;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    background: #080f08;
+}
+
+/* ── Skills List ─────────────────────────────────────────────────────── */
+
+.skills-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.skills-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #0e180e;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 0.38s ease, transform 0.38s ease;
+}
+
+.skills-row:last-child {
+    border-bottom: none;
+}
+
+.skills-row.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.skills-cat {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00f26055;
+    min-width: 88px;
+    flex-shrink: 0;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.skills-items {
+    font-size: 0.83rem;
+    color: #7aaa7a;
+    line-height: 1.5;
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 0.01em;
 } 

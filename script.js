@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
 
 // Toggle experience description
 function toggleDescription(button) {
-    const card = button.closest('.experience-card');
+    const card = button.closest('.pcb-card');
     const shortDesc = card.querySelector('.description-short');
     const fullDesc = card.querySelector('.description-full');
     const experienceSection = document.getElementById('experience');
@@ -403,8 +403,511 @@ function initHeroAnimation() {
     hero1Observer.observe(hero1);
 }
 
+function initSkillAnimations() {
+    const rows = document.querySelectorAll('.skills-row');
+    if (!rows.length) return;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const idx = Array.from(rows).indexOf(entry.target);
+                setTimeout(() => entry.target.classList.add('visible'), idx * 55);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.05 });
+    rows.forEach(r => observer.observe(r));
+}
+
+function initExpChip() {
+    const canvas = document.getElementById('exp-chip-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    const EXP_DATA = {
+        see: {
+            ref: 'U1', role: 'undergraduate research assistant',
+            company: 'system energy efficiency (see) lab, uc san diego',
+            companyUrl: 'https://seelab.ucsd.edu/index.html',
+            duration: 'april 2026 — present',
+            logos: [{ src: 'see-logo.png', alt: 'SEE Lab', lg: false }, { src: 'ucsd.png', alt: 'UC San Diego', lg: false }],
+            highlights: ['82× clustering speedup', '10,000× energy reduction', 'vs. GPU baseline'],
+            shortDesc: 'building hardware-software systems that push analog in-memory computing past the limits of traditional digital accelerators, achieving energy and throughput gains that GPU baselines can\'t touch. research conducted under Prof. Tajana Šimunić Rosing.',
+            bullets: [
+                'researching analog in-memory computing accelerators for mass spectrometry clustering pipelines',
+                'implementing HDC pipelines mapping binary hypervectors into PCM cells for ultra-low-energy inference',
+                'developing RTL modules for 3D-stacked memory architectures under Prof. Tajana Šimunić Rosing',
+            ],
+            tags: ['in-memory computing', 'hdc', 'rtl', 'phase change memory', 'hardware-software co-design', 'cycle-accurate simulation']
+        },
+        kyte: {
+            ref: 'U2', role: 'co-founder & ceo',
+            company: 'kyte', companyUrl: null,
+            duration: 'january 2025 — may 2025',
+            logos: [{ src: 'kyte.png', alt: 'Kyte', lg: true }],
+            highlights: ['40,000+ students reached', '3,000+ weekly orders', 'sub-40 min delivery SLA'],
+            shortDesc: 'co-founded a campus delivery startup at UC San Diego, built the full platform from scratch, scaled to thousands of weekly orders, and kept delivery under 40 minutes end to end.',
+            bullets: [
+                'founded and scaled a college delivery marketplace serving UC San Diego',
+                'architected a multi-sided platform with Next.js, TypeScript, PostgreSQL, and Redis/BullMQ',
+                'engineered a fault-tolerant order engine with payment idempotency and real-time dispatch routing',
+            ],
+            tags: ['next.js', 'typescript', 'postgresql', 'redis', 'bullmq', 'api design', 'ci/cd']
+        },
+        health: {
+            ref: 'U3', role: 'software engineering intern',
+            company: 'health1st.ai', companyUrl: null,
+            duration: 'june 2025 — december 2025',
+            logos: [{ src: 'health1st.png', alt: 'Health1st', lg: false }],
+            highlights: ['sub-100ms p99 latency', 'HL7 v2.1–2.7 + FHIR R3–R5', 'multi-tenant isolation'],
+            shortDesc: 'built the core data interoperability layer for a healthcare AI platform, covering HL7/FHIR parsing, intelligent field mapping with LLMs, and a distributed backend held to enterprise security standards.',
+            bullets: [
+                'built a FastAPI service for healthcare interoperability across HL7, FHIR, CCDA, and X12 formats',
+                'integrated LangChain with OpenAI and Anthropic for intelligent field mapping and vector search',
+                'architected distributed microservices with OWASP-compliant security and Prometheus observability',
+            ],
+            tags: ['fastapi', 'postgresql', 'redis', 'hl7/fhir', 'langchain', 'docker', 'google cloud', 'prometheus', 'owasp']
+        }
+    };
+
+    // 3 experience die zones: SEE Lab (left), Kyte (center), Health1st (right)
+    const ZONE_LAYOUT = [
+        { cat: 'see',    xc: -1.375, zc: 0, w: 1.65, d: 3.10 },
+        { cat: 'kyte',   xc:  0.0,   zc: 0, w: 0.98, d: 3.10 },
+        { cat: 'health', xc:  1.375, zc: 0, w: 1.65, d: 3.10 },
+    ];
+
+    // Left pins → SEE Lab (U1), right pins → Health1st (U3)
+    const PIN_CAT = { left: 'see', right: 'health' };
+
+    let activeExp = 'see';
+    let isOnCanvas = false;
+
+    const wrapper = canvas.parentElement;
+    const H = wrapper.clientHeight || 380;
+    const W = wrapper.clientWidth  || 700;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(W, H);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(36, W / H, 0.1, 100);
+    camera.position.set(0, 5.5, 7.5);
+    camera.lookAt(0, -0.2, 0);
+
+    const chipGroup = new THREE.Group();
+    scene.add(chipGroup);
+
+    const bodyMat  = new THREE.MeshPhysicalMaterial({ color: 0x0e0e10, roughness: 0.82, metalness: 0.04, clearcoat: 0.4, clearcoatRoughness: 0.6 });
+    const traceMat = new THREE.MeshStandardMaterial({ color: 0x00f260, emissive: 0x00f260, emissiveIntensity: 0.5, roughness: 0.38, metalness: 0.18 });
+    const dotMat   = new THREE.MeshStandardMaterial({ color: 0x00f260, emissive: 0x00f260, emissiveIntensity: 1.2 });
+    const padMat   = new THREE.MeshPhysicalMaterial({ color: 0xb89c14, roughness: 0.12, metalness: 0.96, emissive: 0x332200, emissiveIntensity: 0.25 });
+    const dieMat   = new THREE.MeshStandardMaterial({ color: 0x0b0d14, roughness: 0.52, metalness: 0.14 });
+
+    const CHIP_W = 5, CHIP_H = 0.28, CHIP_D = 3.5;
+    const TOP_Y = CHIP_H / 2;
+
+    // Chip body
+    chipGroup.add(new THREE.Mesh(new THREE.BoxGeometry(CHIP_W, CHIP_H, CHIP_D), bodyMat));
+    // Chamfer base ring (slightly larger, lower, darker — gives the IC a stepped edge look)
+    const brd = new THREE.Mesh(
+        new THREE.BoxGeometry(CHIP_W + 0.14, CHIP_H * 0.46, CHIP_D + 0.14),
+        new THREE.MeshPhysicalMaterial({ color: 0x1a1a1e, roughness: 0.92, metalness: 0.02 })
+    );
+    brd.position.y = -CHIP_H * 0.28;
+    chipGroup.add(brd);
+
+    // Silicon die passivation layer (dark blue-gray, covers full die area)
+    const dieSurface = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.008, 3.1), dieMat);
+    dieSurface.position.y = TOP_Y + 0.005;
+    chipGroup.add(dieSurface);
+
+    // Perimeter trace ring around die area + 2 column dividers
+    function addTrace(x1, z1, x2, z2, w) {
+        w = w || 0.03;
+        const len = Math.hypot(x2 - x1, z2 - z1);
+        const m = new THREE.Mesh(new THREE.BoxGeometry(len, 0.007, w), traceMat);
+        m.position.set((x1 + x2) / 2, TOP_Y + 0.016, (z1 + z2) / 2);
+        m.rotation.y = -Math.atan2(z2 - z1, x2 - x1);
+        chipGroup.add(m);
+    }
+    // Outer perimeter
+    addTrace(-2.2, -1.55,  2.2, -1.55, 0.04);
+    addTrace(-2.2,  1.55,  2.2,  1.55, 0.04);
+    addTrace(-2.2, -1.55, -2.2,  1.55, 0.04);
+    addTrace( 2.2, -1.55,  2.2,  1.55, 0.04);
+    // Column dividers only (no row dividers — 3 side-by-side zones)
+    addTrace(-0.51, -1.55, -0.51, 1.55, 0.025);
+    addTrace( 0.51, -1.55,  0.51, 1.55, 0.025);
+    // Pin stub traces for all 8 left pins (SEE Lab) and 8 right pins (Health1st)
+    const PIN_COUNT = 8, PIN_SPACING = 0.38;
+    const PIN_START_Z = -(PIN_COUNT / 2 - 0.5) * PIN_SPACING;
+    for (let i = 0; i < PIN_COUNT; i++) {
+        const z = PIN_START_Z + i * PIN_SPACING;
+        addTrace(-2.2, z, -2.5, z);
+        addTrace( 2.2, z,  2.5, z);
+    }
+
+    // Vias at column divider intersections
+    function addVia(x, z, r) {
+        r = r || 0.055;
+        const inner = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.5, r * 0.5, 0.014, 12), traceMat);
+        inner.position.set(x, TOP_Y + 0.015, z);
+        chipGroup.add(inner);
+        const ring = new THREE.Mesh(new THREE.RingGeometry(r, r * 1.7, 16), traceMat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.set(x, TOP_Y + 0.018, z);
+        chipGroup.add(ring);
+    }
+    addVia(-0.51, -1.55); addVia( 0.51, -1.55);
+    addVia(-0.51,  1.55); addVia( 0.51,  1.55);
+    addVia(-2.2,  -1.55); addVia( 2.2,  -1.55);
+    addVia(-2.2,   1.55); addVia( 2.2,   1.55);
+
+    // Gold bond pads — where wire bonds connect die to package leads
+    function addBondPad(x, z) {
+        const pad = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.015, 0.1), padMat);
+        pad.position.set(x, TOP_Y + 0.015, z);
+        chipGroup.add(pad);
+    }
+    for (let i = 0; i < PIN_COUNT; i++) {
+        const z = PIN_START_Z + i * PIN_SPACING;
+        addBondPad(-2.06, z);
+        addBondPad( 2.06, z);
+    }
+
+    // Canvas-texture labels burned onto die surface ("U1 · see lab", etc.)
+    function makeZoneLabel(ref, name, zoneW, zoneD) {
+        const c = document.createElement('canvas');
+        c.width = 256; c.height = 96;
+        const ctx = c.getContext('2d');
+        ctx.clearRect(0, 0, 256, 96);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(0,242,96,0.65)';
+        ctx.font = 'bold 22px monospace';
+        ctx.fillText(ref, 128, 34);
+        ctx.fillStyle = 'rgba(0,242,96,0.38)';
+        ctx.font = '15px monospace';
+        ctx.fillText(name, 128, 62);
+        const tex = new THREE.CanvasTexture(c);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false });
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(zoneW * 0.72, zoneD * 0.28), mat);
+        plane.rotation.x = -Math.PI / 2;
+        return plane;
+    }
+
+    // Per-zone base colors: SEE=hardware navy, Kyte=logic green, Health=data teal
+    const ZONE_STYLES = {
+        see:    { color: 0x08091a },
+        kyte:   { color: 0x060f09 },
+        health: { color: 0x060f0d },
+    };
+
+    // Shared thin-trace material for internal circuit detail
+    const detailMat = new THREE.MeshStandardMaterial({ color: 0x00f260, emissive: 0x00f260, emissiveIntensity: 0.2, roughness: 0.52 });
+
+    // Die zone meshes — the interactive regions on the chip top
+    const zoneMeshes = {};
+    const allZoneMeshes = [];
+
+    ZONE_LAYOUT.forEach(({ cat, xc, zc, w, d }) => {
+        const mat = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(ZONE_STYLES[cat].color),
+            emissive: new THREE.Color(0x00f260),
+            emissiveIntensity: 0.06,
+            roughness: 0.78,
+            metalness: 0.1,
+            transparent: true,
+            opacity: 0.92,
+        });
+        const zone = new THREE.Mesh(new THREE.BoxGeometry(w - 0.06, 0.022, d - 0.06), mat);
+        zone.position.set(xc, TOP_Y + 0.012, zc);
+        zone.userData.category = cat;
+        chipGroup.add(zone);
+        zoneMeshes[cat] = zone;
+        allZoneMeshes.push(zone);
+
+        // Internal circuit detail — each zone has a distinct pattern
+        if (cat === 'see') {
+            // Memory grid: regular array of vertical + horizontal traces
+            for (let col = 0; col < 4; col++) {
+                const x = xc - w * 0.33 + col * (w * 0.22);
+                const t = new THREE.Mesh(new THREE.BoxGeometry(0.013, 0.004, d * 0.65), detailMat);
+                t.position.set(x, TOP_Y + 0.026, zc);
+                chipGroup.add(t);
+            }
+            for (let row = 0; row < 3; row++) {
+                const z2 = zc - d * 0.26 + row * (d * 0.26);
+                const t = new THREE.Mesh(new THREE.BoxGeometry(w * 0.66, 0.004, 0.013), detailMat);
+                t.position.set(xc, TOP_Y + 0.026, z2);
+                chipGroup.add(t);
+            }
+        } else if (cat === 'kyte') {
+            // Logic routing: L-shaped traces like gate interconnect
+            [[xc-0.12, zc-0.52, 0.27], [xc+0.16, zc+0.35, 0.22], [xc-0.05, zc+0.08, 0.31]].forEach(([rx, rz, len]) => {
+                const v = new THREE.Mesh(new THREE.BoxGeometry(0.013, 0.004, len), detailMat);
+                v.position.set(rx, TOP_Y + 0.026, rz);
+                chipGroup.add(v);
+                const h = new THREE.Mesh(new THREE.BoxGeometry(len * 0.55, 0.004, 0.013), detailMat);
+                h.position.set(rx, TOP_Y + 0.026, rz - len * 0.3);
+                chipGroup.add(h);
+            });
+        } else {
+            // Health: vertical data channels of varying length
+            for (let col = 0; col < 5; col++) {
+                const x = xc - w * 0.33 + col * (w * 0.165);
+                const len = d * (0.4 + (col % 2) * 0.22);
+                const t = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.004, len), detailMat);
+                t.position.set(x, TOP_Y + 0.026, zc + (col % 2) * 0.1);
+                chipGroup.add(t);
+            }
+        }
+
+        const label = makeZoneLabel(EXP_DATA[cat].ref, cat, w, d);
+        label.position.set(xc, TOP_Y + 0.04, zc);
+        chipGroup.add(label);
+    });
+
+    // Gull-wing IC leads — 3 segments per pin (shoulder → drop → foot)
+    const expPinMeshes = { see: [], kyte: [], health: [] };
+    const SIDE_X = CHIP_W / 2;
+    const PIN_W  = 0.1;
+    const GULL_DROP = CHIP_H * 0.52;
+
+    for (let i = 0; i < PIN_COUNT; i++) {
+        const z = PIN_START_Z + i * PIN_SPACING;
+        ['left', 'right'].forEach(side => {
+            const expKey = PIN_CAT[side];
+            const xs = side === 'left' ? -1 : 1;
+            const mat = new THREE.MeshPhysicalMaterial({
+                color: 0xc0c0c0, roughness: 0.16, metalness: 0.96,
+                emissive: new THREE.Color(0x00f260), emissiveIntensity: 0
+            });
+            // Shoulder: exits chip side horizontally
+            const sh = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.048, PIN_W), mat);
+            sh.position.set(xs * (SIDE_X + 0.11), 0, z);
+            chipGroup.add(sh);
+            expPinMeshes[expKey].push(sh);
+            // Drop: vertical section going down
+            const dr = new THREE.Mesh(new THREE.BoxGeometry(0.048, GULL_DROP, PIN_W), mat);
+            dr.position.set(xs * (SIDE_X + 0.22), -(CHIP_H * 0.24 + GULL_DROP * 0.5), z);
+            chipGroup.add(dr);
+            expPinMeshes[expKey].push(dr);
+            // Foot: horizontal base extending outward
+            const ft = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.04, PIN_W), mat);
+            ft.position.set(xs * (SIDE_X + 0.36), -(CHIP_H * 0.24 + GULL_DROP - 0.02), z);
+            chipGroup.add(ft);
+            expPinMeshes[expKey].push(ft);
+        });
+    }
+
+    // Pin-1 indicator dot (top-left corner of die)
+    const dot = new THREE.Mesh(new THREE.CircleGeometry(0.1, 16), dotMat);
+    dot.rotation.x = -Math.PI / 2;
+    dot.position.set(-2.05, TOP_Y + 0.007, -1.35);
+    chipGroup.add(dot);
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0x111111, 1.4));
+    const keyLight = new THREE.DirectionalLight(0x00f260, 2.0);
+    keyLight.position.set(-4, 8, 3);
+    scene.add(keyLight);
+    const rimLight = new THREE.DirectionalLight(0x88ffcc, 0.8);
+    rimLight.position.set(4, 6, -4);
+    scene.add(rimLight);
+    const fillLight = new THREE.DirectionalLight(0x003311, 0.5);
+    fillLight.position.set(0, -3, 6);
+    scene.add(fillLight);
+
+    // Raycaster for die zone interaction
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    // Compact view — right-side panel beside the chip
+    function renderCallout(expKey) {
+        const callout = document.getElementById('exp-callout');
+        if (!callout) return;
+        const data = EXP_DATA[expKey];
+        if (!data) return;
+
+        const logoHtml = data.logos.map(l =>
+            `<img src="${l.src}" alt="${l.alt}" class="exp-logo${l.lg ? ' exp-logo-lg' : ''}">`
+        ).join('');
+        const companyHtml = data.companyUrl
+            ? `<a href="${data.companyUrl}" target="_blank" rel="noopener noreferrer" class="co-company">${data.company}</a>`
+            : `<span class="co-company">${data.company}</span>`;
+        const highlightsHtml = data.highlights.map(h => `<span>${h}</span>`).join('');
+
+        callout.style.opacity = '0';
+        setTimeout(() => {
+            callout.innerHTML = `
+                <div class="co-ref">${data.ref}</div>
+                <div class="co-logos">${logoHtml}</div>
+                <div class="co-role">${data.role}</div>
+                ${companyHtml}
+                <div class="co-duration">${data.duration}</div>
+                <div class="co-highlights">${highlightsHtml}</div>
+                <p class="co-short-desc">${data.shortDesc}</p>
+            `;
+            callout.style.opacity = '1';
+        }, 300);
+    }
+
+    function renderBreakdown(expKey) {
+        const panel = document.getElementById('exp-breakdown');
+        if (!panel) return;
+        const data = EXP_DATA[expKey];
+        if (!data) return;
+
+        const logoHtml = data.logos.map(l =>
+            `<img src="${l.src}" alt="${l.alt}" class="exp-logo${l.lg ? ' exp-logo-lg' : ''}">`
+        ).join('');
+        const companyHtml = data.companyUrl
+            ? `<a href="${data.companyUrl}" target="_blank" rel="noopener noreferrer" class="exp-panel-company">${data.company}</a>`
+            : `<span class="exp-panel-company">${data.company}</span>`;
+        const highlightsHtml = data.highlights.map(h => `<span>${h}</span>`).join('');
+        const bulletsHtml    = data.bullets.map(b => `<li>${b}</li>`).join('');
+        const tagsHtml       = data.tags.map(t => `<span>${t}</span>`).join('');
+
+        panel.style.opacity = '0';
+        setTimeout(() => {
+            panel.innerHTML = `
+                <div class="exp-panel">
+                    <div class="exp-panel-header">
+                        <div class="exp-logos">${logoHtml}</div>
+                        <div class="exp-panel-meta">
+                            <div class="exp-panel-role">${data.role}</div>
+                            ${companyHtml}
+                            <div class="exp-panel-duration">${data.duration}</div>
+                        </div>
+                    </div>
+                    <div class="exp-highlights">${highlightsHtml}</div>
+                    <ul class="exp-bullets">${bulletsHtml}</ul>
+                    <div class="exp-panel-tags">${tagsHtml}</div>
+                </div>
+            `;
+            panel.style.opacity = '1';
+        }, 300);
+    }
+
+    function setActiveExp(expKey) {
+        if (expKey === activeExp) return;
+        activeExp = expKey;
+        document.querySelectorAll('.exp-nav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.exp === expKey);
+        });
+        renderCallout(expKey);
+        renderBreakdown(expKey);
+    }
+
+    // Nav button clicks
+    document.querySelectorAll('.exp-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            stopAutoCycle();
+            setActiveExp(btn.dataset.exp);
+            setTimeout(startAutoCycle, 5000);
+        });
+    });
+
+    // Auto-cycle through 3 experiences
+    const expOrder = ['see', 'kyte', 'health'];
+    let autoCycleIdx = 0;
+    let autoCycleTimer = null;
+
+    function startAutoCycle() {
+        autoCycleTimer = setInterval(() => {
+            autoCycleIdx = (autoCycleIdx + 1) % expOrder.length;
+            setActiveExp(expOrder[autoCycleIdx]);
+        }, 6000);
+    }
+
+    function stopAutoCycle() {
+        clearInterval(autoCycleTimer);
+        autoCycleTimer = null;
+    }
+
+    const hintEl = document.getElementById('exp-chip-hint');
+
+    // Invisible pick plane covering full chip top — reliably hittable at any rotation
+    const pickPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(CHIP_W, CHIP_D),
+        new THREE.MeshBasicMaterial({ visible: false, side: THREE.DoubleSide })
+    );
+    pickPlane.rotation.x = -Math.PI / 2;
+    pickPlane.position.y = TOP_Y + 0.06;
+    chipGroup.add(pickPlane);
+
+    canvas.addEventListener('mouseenter', () => {
+        isOnCanvas = true;
+        stopAutoCycle();
+        if (hintEl) hintEl.classList.remove('hidden');
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+        isOnCanvas = false;
+        if (hintEl) hintEl.classList.add('hidden');
+        startAutoCycle();
+    });
+
+    canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
+        mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const hits = raycaster.intersectObject(pickPlane);
+        if (hits.length > 0) {
+            chipGroup.updateMatrixWorld();
+            const localX = chipGroup.worldToLocal(hits[0].point.clone()).x;
+            let hitCat = null;
+            if (localX < -0.51) hitCat = 'see';
+            else if (localX > 0.51) hitCat = 'health';
+            else hitCat = 'kyte';
+            if (hitCat && hitCat !== activeExp) {
+                setActiveExp(hitCat);
+                autoCycleIdx = expOrder.indexOf(hitCat);
+            }
+        }
+    });
+
+    let t = 0;
+    function animateChip() {
+        requestAnimationFrame(animateChip);
+
+        t += 0.008;
+        chipGroup.rotation.y += (t - chipGroup.rotation.y) * 0.08;
+        chipGroup.rotation.x += (Math.sin(t * 0.35) * 0.05 - 0.38 - chipGroup.rotation.x) * 0.08;
+
+        Object.entries(zoneMeshes).forEach(([cat, mesh]) => {
+            const target = cat === activeExp ? 0.72 : 0.035;
+            mesh.material.emissiveIntensity += (target - mesh.material.emissiveIntensity) * 0.1;
+        });
+
+        Object.entries(expPinMeshes).forEach(([cat, meshes]) => {
+            const target = cat === activeExp ? 1.4 : 0.0;
+            meshes.forEach(m => {
+                m.material.emissiveIntensity += (target - m.material.emissiveIntensity) * 0.08;
+            });
+        });
+
+        renderer.render(scene, camera);
+    }
+    animateChip();
+
+    new ResizeObserver(() => {
+        const w = wrapper.clientWidth;
+        camera.aspect = w / H;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, H);
+    }).observe(wrapper);
+
+    renderCallout('see');
+    renderBreakdown('see');
+    startAutoCycle();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initHeroAnimation();
+    initExpChip();
+    initSkillAnimations();
 
     if (typeof tsParticles !== 'undefined') {
         tsParticles.load('particles-js', {
