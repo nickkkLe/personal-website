@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"HTTP Status: %{http_code}\\\\nTotal time: %{time_total}s\\\\nRedirect URL: %{redirect_url}\\\\n\" https://nicholasle.dev/ --max-time 15)",
+      "Bash(curl -v https://nicholasle.dev/ --max-time 15)",
+      "Bash(curl -s -o /dev/null -w \"google.com -> %{http_code}\\\\n\" https://www.google.com --max-time 10)",
+      "Bash(curl -s -o /dev/null -w \"github.com -> %{http_code}\\\\n\" https://github.com --max-time 10)",
+      "Bash(curl -4 -v https://nicholasle.dev/ --max-time 15)",
+      "Bash(curl -v http://nicholasle.dev/ --max-time 15)",
+      "Bash(dig +short nicholasle.dev)",
+      "Bash(nslookup nicholasle.dev)",
+      "Bash(curl -s http://nicholasle.dev/ --max-time 15)",
+      "Bash(whois nicholasle.dev)",
+      "Bash(whois -h whois.registry.google nicholasle.dev)",
+      "Bash(curl -s \"https://www.googleapis.com/domainsrdap/v1/domain/nicholasle.dev\" --max-time 15)",
+      "Bash(curl -s \"https://rdap.registry.google/domain/nicholasle.dev\" --max-time 15)",
+      "Bash(curl -s \"https://rdap.org/domain/nicholasle.dev\" --max-time 15 -L)",
+      "Bash(curl -s \"https://www.whoxy.com/nicholasle.dev\" --max-time 15 -A \"Mozilla/5.0\")",
+      "Bash(curl -s \"https://viewdns.info/whois/?domain=nicholasle.dev\" --max-time 15 -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\)\")"
+    ]
+  }
+}
