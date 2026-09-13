@@ -403,21 +403,6 @@ function initHeroAnimation() {
     hero1Observer.observe(hero1);
 }
 
-function initSkillAnimations() {
-    const rows = document.querySelectorAll('.skills-row');
-    if (!rows.length) return;
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const idx = Array.from(rows).indexOf(entry.target);
-                setTimeout(() => entry.target.classList.add('visible'), idx * 55);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.05 });
-    rows.forEach(r => observer.observe(r));
-}
-
 function initExpChip() {
     const canvas = document.getElementById('exp-chip-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
@@ -907,7 +892,6 @@ function initExpChip() {
 document.addEventListener('DOMContentLoaded', () => {
     initHeroAnimation();
     initExpChip();
-    initSkillAnimations();
 
     if (typeof tsParticles !== 'undefined') {
         tsParticles.load('particles-js', {

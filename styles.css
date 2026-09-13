@@ -974,31 +974,8 @@ section {
 }
 
 /* ============================================
-   CHIP DIE FLOORPLAN — Skills
+   CHIP DIE FLOORPLAN
    ============================================ */
-
-.skills {
-    background: transparent;
-    position: relative;
-}
-
-/* PCB substrate dot grid */
-.skills::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(0,242,96,0.09) 1px, transparent 1px);
-    background-size: 28px 28px;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.skills .container {
-    position: relative;
-    z-index: 1;
-    padding-left: 40px;
-    padding-right: 40px;
-}
 
 .chip-die {
     max-width: 960px;
@@ -1951,47 +1928,3 @@ a.exp-panel-company:hover {
     background: #080f08;
 }
 
-/* ── Skills List ─────────────────────────────────────────────────────── */
-
-.skills-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.skills-row {
-    display: flex;
-    align-items: baseline;
-    gap: 1.5rem;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid #0e180e;
-    opacity: 0;
-    transform: translateX(-12px);
-    transition: opacity 0.38s ease, transform 0.38s ease;
-}
-
-.skills-row:last-child {
-    border-bottom: none;
-}
-
-.skills-row.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.skills-cat {
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #00f26055;
-    min-width: 88px;
-    flex-shrink: 0;
-    font-family: 'Roboto Mono', monospace;
-}
-
-.skills-items {
-    font-size: 0.83rem;
-    color: #7aaa7a;
-    line-height: 1.5;
-    font-family: 'Roboto Mono', monospace;
-    letter-spacing: 0.01em;
-} 
